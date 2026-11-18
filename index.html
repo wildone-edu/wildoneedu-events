@@ -110,10 +110,14 @@
   .info { font-size: 14.5px; color: var(--brown); display: flex; gap: 8px; align-items: flex-start; }
   .info svg { flex: 0 0 16px; margin-top: 4px; }
   .places { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* 卡片底部：左邊地點、右邊按鈕；放不下時按鈕換到下一行靠右 */
+  .card-foot { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between; gap: 8px; }
   .place { font-size: 13px; color: var(--brown); background: var(--bg); padding: 2px 10px; border-radius: 999px; }
 
-  .action { margin-top: auto; padding-top: 6px; }
-  .btn { display: block; text-align: center; font-size: 15px; font-weight: 700; padding: 9px; border-radius: 999px; }
+  .btn { margin-left: auto; display: inline-flex; align-items: center; min-height: 36px; white-space: nowrap;
+    font-size: 14px; font-weight: 700; padding: 0 16px; border-radius: 999px; }
   .btn-apply { background: var(--red); color: #fff; }
   a.card:hover .btn-apply { background: #cf532a; }
   .btn-visit { background: #fff; color: var(--red-dark); border: 1.5px solid var(--red); }
@@ -383,8 +387,8 @@ function makeCard(a) {
   cover.appendChild(img);
 
   const btn = !hasLink ? '<span class="btn btn-off">暫不開放申請</span>'
-    : isVisit ? '<span class="btn btn-visit">參觀資訊</span>'
-    : '<span class="btn btn-apply">前往申請</span>';
+    : isVisit ? '<span class="btn btn-visit">參觀資訊 →</span>'
+    : '<span class="btn btn-apply">前往申請 →</span>';
 
   const body = document.createElement("div");
   body.className = "card-body";
@@ -393,8 +397,10 @@ function makeCard(a) {
     <h2 class="card-title">${esc(a.title)}</h2>
     <div class="info">${ICON.people}<span>${esc(a.targetText)}</span></div>
     <div class="info">${ICON.clock}<span>${esc(a.time)}</span></div>
-    <div class="places">${a.places.map(p => `<span class="place">${esc(placeLabel(p))}</span>`).join("")}</div>
-    <div class="action">${btn}</div>`;
+    <div class="card-foot">
+      <div class="places">${a.places.map(p => `<span class="place">${esc(placeLabel(p))}</span>`).join("")}</div>
+      ${btn}
+    </div>`;
 
   card.append(cover, body);
   return card;
