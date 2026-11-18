@@ -157,15 +157,14 @@
     <p class="eyebrow">環境教育課・課程與活動預約</p>
     <h1>野灣教育活動列表</h1>
     <p class="lede">野灣把救傷現場的經驗，設計成適合不同年齡的課程、講座與體驗活動。請依預約方式、參與對象與地點篩選，找到適合的活動。</p>
-    <img class="masthead-art" src="images/illust/squirrel.png" alt="" aria-hidden="true">
+    <img class="masthead-art" src="images/illust/pangolin.png" alt="" aria-hidden="true">
   </header>
 
   <section class="filter-panel" aria-label="篩選條件">
     <div class="filter-row">
       <span class="filter-label">預約方式</span>
       <div class="segment" id="modeGroup">
-        <button type="button" data-mode="全部" aria-pressed="true">全部</button>
-        <button type="button" data-mode="團體" aria-pressed="false">團體預約</button>
+        <button type="button" data-mode="團體" aria-pressed="true">單位預約</button>
         <button type="button" data-mode="個人" aria-pressed="false">個人預約</button>
       </div>
     </div>
@@ -229,13 +228,18 @@ const ILLUST_BY_KEYWORD = [
   ["黑熊", "bear"], ["穿山甲", "pangolin"], ["鳥", "sparrow"], ["山中精靈", "civet"],
 ];
 
-// 5. 封面圖：直接讀試算表「活動封面圖」欄的 Google Drive 連結
+// 5. 地點在網頁上的顯示名稱（左邊＝試算表寫法，右邊＝網頁顯示；沒列到的照試算表顯示）
+const PLACE_LABEL = {
+  "到貴單位分享": "來我的單位分享",
+};
+
+// 6. 封面圖：直接讀試算表「活動封面圖」欄的 Google Drive 連結
 //    （圖片需設為「知道連結的任何人都能查看」；沒填或讀不到時改用插圖）
 
 /* ========================================================= */
 
 let activities = [];
-const state = { mode: "全部", targets: new Set(), places: new Set() };
+const state = { mode: "團體", targets: new Set(), places: new Set() };
 const $ = (id) => document.getElementById(id);
 
 loadData();
@@ -313,7 +317,7 @@ function buildChips() {
 
   const places = [...new Set(activities.flatMap(a => a.places))];
   $("placeChips").innerHTML = "";
-  places.forEach(p => $("placeChips").appendChild(makeChip(p, p, state.places)));
+  places.forEach(p => $("placeChips").appendChild(makeChip(placeLabel(p), p, state.places)));
 }
 
 function makeChip(label, value, set) {
@@ -336,16 +340,16 @@ $("modeGroup").addEventListener("click", (e) => {
 });
 
 $("clearBtn").onclick = () => {
-  state.targets.clear(); state.places.clear(); state.mode = "全部";
+  state.targets.clear(); state.places.clear(); state.mode = "團體";
   document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", "false"));
-  document.querySelectorAll("#modeGroup button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === "全部"));
+  document.querySelectorAll("#modeGroup button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === "團體"));
   render();
 };
 
 /* --- 篩選＋顯示：同一類條件是「或」，不同類條件是「且」 --- */
 function render() {
   const list = activities.filter(a =>
-    (state.mode === "全部" || a.modes.includes(state.mode)) &&
+    a.modes.includes(state.mode) &&
     (state.targets.size === 0 || a.targets.some(t => state.targets.has(t))) &&
     (state.places.size === 0 || a.places.some(p => state.places.has(p)))
   );
@@ -389,12 +393,14 @@ function makeCard(a) {
     <h2 class="card-title">${esc(a.title)}</h2>
     <div class="info">${ICON.people}<span>${esc(a.targetText)}</span></div>
     <div class="info">${ICON.clock}<span>${esc(a.time)}</span></div>
-    <div class="places">${a.places.map(p => `<span class="place">${esc(p)}</span>`).join("")}</div>
+    <div class="places">${a.places.map(p => `<span class="place">${esc(placeLabel(p))}</span>`).join("")}</div>
     <div class="action">${btn}</div>`;
 
   card.append(cover, body);
   return card;
 }
+
+function placeLabel(p) { return PLACE_LABEL[p] || p; }
 
 function pickIllust(a, cat) {
   const hit = ILLUST_BY_KEYWORD.find(([k]) => a.title.includes(k));
