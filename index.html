@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>野灣教育活動列表｜野灣野生動物保育協會</title>
+<meta name="description" content="野灣野生動物保育協會的救傷教育課程、講座與體驗活動。依預約方式、參與對象與地點，找到適合的活動並線上申請。">
+
+<!-- 分享預覽（LINE、Facebook）：網址需與 GitHub Pages 實際網址相同 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="野灣教育活動列表">
+<meta property="og:description" content="救傷教育課程・講座・體驗活動，依對象與地點找到適合的活動。">
+<meta property="og:url" content="https://wildone-edu.github.io/wildoneedu-events/">
+<meta property="og:image" content="https://wildone-edu.github.io/wildoneedu-events/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* ===== 配色：與教學資源包一致 ===== */
+  :root {
+    --bg: #f6f0e7;        /* 米色底 */
+    --card: #ffffff;      /* 白卡片 */
+    --ink: #261f1b;       /* 主要文字 */
+    --brown: #724f38;     /* 次要文字、標籤 */
+    --muted: #9a928b;     /* 說明文字 */
+    --line: #e9e0d4;      /* 分隔線、框線 */
+    --orange: #ffa861;    /* 淺橘 */
+    --red: #e36236;       /* 橘紅（主色） */
+    --red-dark: #984929;  /* 深橘咖啡（連結） */
+    --red-soft: #fdf1ea;  /* 淡橘底 */
+    --peach: #fbe3d6;     /* 筆數標籤底 */
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  button { font: inherit; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+  .page { max-width: 1160px; margin: 0 auto; padding: 40px 24px 64px; }
+
+  /* ===== 頁首 ===== */
+  .masthead { position: relative; padding-right: 220px; margin-bottom: 28px; }
+  .logo { width: 200px; margin-bottom: 18px; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 8px;
+    font-size: 14px; font-weight: 700; letter-spacing: .08em; color: var(--red-dark); }
+  .eyebrow::before { content: ""; width: 32px; height: 5px; border-radius: 3px; background: var(--orange); }
+  h1 { font-size: 44px; font-weight: 900; letter-spacing: .02em; line-height: 1.3; margin: 0 0 12px; }
+  .lede { font-size: 17px; margin: 0; max-width: 46em; }
+  .masthead-art { position: absolute; right: 0; bottom: -10px; width: 200px; }
+
+  /* ===== 篩選區 ===== */
+  .filter-panel { background: var(--card); border-radius: var(--radius); padding: 22px 26px 16px; margin-bottom: 32px; }
+  .filter-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+  .filter-label { flex: 0 0 72px; font-size: 14px; font-weight: 700; color: var(--brown); padding-top: 7px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .segment { display: inline-flex; background: var(--bg); border-radius: 999px; padding: 4px; }
+  .segment button {
+    border: none; background: none; cursor: pointer; color: var(--brown);
+    font-size: 15px; font-weight: 500; padding: 7px 22px; border-radius: 999px;
+  }
+  .segment button[aria-pressed="true"] { background: var(--red); color: #fff; font-weight: 700; }
+
+  .chip {
+    border: 1.5px solid var(--line); background: #fff; color: var(--ink); cursor: pointer;
+    font-size: 15px; padding: 5px 16px; border-radius: 999px; transition: border-color .15s, background .15s;
+  }
+  .chip:hover { border-color: var(--orange); }
+  .chip[aria-pressed="true"] { border-color: var(--red); background: var(--red-soft); color: var(--red-dark); font-weight: 700; }
+  .chip[aria-pressed="true"]::before { content: "✓ "; }
+
+  .filter-foot { display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line); margin-top: 6px; padding-top: 12px; }
+  .count { font-size: 14px; font-weight: 700; color: var(--red-dark); background: var(--peach); padding: 2px 14px; border-radius: 999px; }
+  .clear-btn { border: none; background: none; cursor: pointer; padding: 0;
+    font-size: 15px; font-weight: 700; color: var(--red-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ===== 課程卡片 ===== */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+  .card {
+    background: var(--card); border-radius: var(--radius); overflow: hidden; text-decoration: none;
+    display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;
+  }
+  a.card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px -14px rgba(38, 31, 27, .35); }
+  .cover { margin: 10px 10px 0; border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 9; background: var(--bg); }
+  .cover img { width: 100%; height: 100%; object-fit: cover; }
+  .cover.illust { display: flex; align-items: center; justify-content: center; }
+  .cover.illust img { width: auto; height: 82%; object-fit: contain; }
+
+  .card-body { padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .tag { align-self: flex-start; font-size: 13px; font-weight: 700; padding: 1px 10px; border-radius: 6px; }
+  .card-title { font-size: 19px; font-weight: 700; line-height: 1.45; margin: 0; }
+  .info { font-size: 14.5px; color: var(--brown); display: flex; gap: 8px; align-items: flex-start; }
+  .info svg { flex: 0 0 16px; margin-top: 4px; }
+  .places { display: flex; flex-wrap: wrap; gap: 6px; }
+  .place { font-size: 13px; color: var(--brown); background: var(--bg); padding: 2px 10px; border-radius: 999px; }
+
+  .action { margin-top: auto; padding-top: 6px; }
+  .btn { display: block; text-align: center; font-size: 15px; font-weight: 700; padding: 9px; border-radius: 999px; }
+  .btn-apply { background: var(--red); color: #fff; }
+  a.card:hover .btn-apply { background: #cf532a; }
+  .btn-visit { background: #fff; color: var(--red-dark); border: 1.5px solid var(--red); }
+  .btn-off { background: #eee8e0; color: var(--muted); }
+
+  /* ===== 狀態訊息（載入中、無結果、錯誤） ===== */
+  .state { grid-column: 1 / -1; background: var(--card); border-radius: var(--radius);
+    padding: 36px 20px; text-align: center; color: var(--brown); }
+  .state img { width: 140px; margin: 0 auto 10px; }
+  .state p { margin: 0 0 6px; }
+  .state .sub { font-size: 14px; color: var(--muted); }
+  .state button { margin-top: 12px; }
+
+  /* ===== 頁尾 ===== */
+  .notes { margin-top: 36px; font-size: 14px; color: var(--muted); text-align: center; line-height: 1.9; }
+  .notes a { color: var(--red-dark); font-weight: 700; }
+
+  /* ===== 手機 ===== */
+  @media (max-width: 720px) {
+    .page { padding: 24px 16px 48px; }
+    .masthead { padding-right: 0; }
+    .masthead-art { width: 92px; bottom: auto; top: 0; }
+    .logo { width: 150px; margin-bottom: 14px; }
+    h1 { font-size: 30px; }
+    .lede { font-size: 15.5px; }
+    .filter-panel { padding: 16px 16px 12px; }
+    .filter-row { flex-direction: column; gap: 8px; }
+    .filter-label { flex: none; padding-top: 0; }
+    .segment { display: flex; width: 100%; }
+    .segment button { flex: 1; padding: 7px 4px; }
+    .chip { font-size: 14px; padding: 4px 13px; }
+    .grid { grid-template-columns: 1fr; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <img class="logo" src="images/logo.png" alt="WildOne 野灣野生動物保育協會">
+    <p class="eyebrow">環境教育課・課程與活動預約</p>
+    <h1>野灣教育活動列表</h1>
+    <p class="lede">野灣把救傷現場的經驗，設計成適合不同年齡的課程、講座與體驗活動。請依預約方式、參與對象與地點篩選，找到適合的活動。</p>
+    <img class="masthead-art" src="images/illust/squirrel.png" alt="" aria-hidden="true">
+  </header>
+
+  <section class="filter-panel" aria-label="篩選條件">
+    <div class="filter-row">
+      <span class="filter-label">預約方式</span>
+      <div class="segment" id="modeGroup">
+        <button type="button" data-mode="全部" aria-pressed="true">全部</button>
+        <button type="button" data-mode="團體" aria-pressed="false">團體預約</button>
+        <button type="button" data-mode="個人" aria-pressed="false">個人預約</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">參與對象</span>
+      <div class="chips" id="targetChips"></div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">活動地點</span>
+      <div class="chips" id="placeChips"></div>
+    </div>
+    <div class="filter-foot">
+      <span class="count" id="count" aria-live="polite">載入中</span>
+      <button type="button" class="clear-btn" id="clearBtn">清除篩選</button>
+    </div>
+  </section>
+
+  <main class="grid" id="grid">
+    <div class="state">
+      <img src="images/illust/pangolin.png" alt="">
+      <p>活動資料載入中…</p>
+    </div>
+  </main>
+
+  <footer class="notes">
+    野灣保育探索館一次參訪人數上限 20 人<br>
+    有任何問題，歡迎來信 <a href="mailto:wildone@wildonetaiwan.org">wildone@wildonetaiwan.org</a> 野灣環境教育課
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   設定區：日常維護只需要改這一區
+   ========================================================= */
+
+// 1. 資料來源：Google 試算表「公開用」分頁發布成 CSV 的網址
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSDFz62dENqr4i4VI2G2wJUr2hE1PG7nq2ZkTJHFectwXDWBMEfBAdejxgP_pP3-xUaBKGHpj9dOZ-B/pub?gid=926366625&single=true&output=csv";
+
+// 2. 參與對象按鈕（左邊＝試算表「適合對象(篩選器用)」欄的寫法，右邊＝按鈕上顯示的字）
+const TARGETS = [
+  ["幼兒", "幼兒"],
+  ["國小低年級", "國小低年級"],
+  ["國小中年級", "國小中年級"],
+  ["國小高年級", "國小高年級"],
+  ["國中", "國中"],
+  ["高中", "高中"],
+  ["一般民眾(成人)", "成人"],
+];
+
+// 3. 分類標籤顏色＋沒有封面圖時用的插圖
+const CATEGORY = {
+  "課程教案": { bg: "#ffa861", ink: "#5a2e10", illust: "pangolin" },
+  "大眾講座": { bg: "#e36236", ink: "#ffffff", illust: "bear" },
+  "體驗活動": { bg: "#8fc26d", ink: "#203b0f", illust: "squirrel" },
+  "自由參觀": { bg: "#68bcbf", ink: "#123e40", illust: "swallow" },
+  "小遊戲":   { bg: "#d9cfc2", ink: "#4a3a2e", illust: "dove" },
+};
+
+// 4. 課程名稱有這些字時，改用對應插圖（比分類插圖優先）
+const ILLUST_BY_KEYWORD = [
+  ["黑熊", "bear"], ["穿山甲", "pangolin"], ["鳥", "sparrow"], ["山中精靈", "civet"],
+];
+
+// 5. 封面圖：直接讀試算表「活動封面圖」欄的 Google Drive 連結
+//    （圖片需設為「知道連結的任何人都能查看」；沒填或讀不到時改用插圖）
+
+/* ========================================================= */
+
+let activities = [];
+const state = { mode: "全部", targets: new Set(), places: new Set() };
+const $ = (id) => document.getElementById(id);
+
+loadData();
+
+async function loadData() {
+  showState("pangolin", "活動資料載入中…");
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    const url = CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    activities = parseRows(parseCSV(await res.text()));
+    buildChips();
+    render();
+  } catch (err) {
+    console.error("資料載入失敗：", err);
+    $("count").textContent = "無法載入";
+    showState("pangolin", "活動資料暫時載入失敗",
+      "請稍後再試，或來信野灣環境教育課詢問。", true);
+  }
+}
+
+/* --- 讀取 CSV（支援引號內的逗號、換行與 "" 跳脫） --- */
+function parseCSV(text) {
+  const rows = []; let row = []; let field = ""; let inQuote = false;
+  text = text.replace(/\r\n?/g, "\n");
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuote) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') inQuote = false;
+      else field += c;
+    } else if (c === '"') inQuote = true;
+    else if (c === ",") { row.push(field.trim()); field = ""; }
+    else if (c === "\n") { row.push(field.trim()); rows.push(row); row = []; field = ""; }
+    else field += c;
+  }
+  if (field || row.length) { row.push(field.trim()); rows.push(row); }
+  return rows.filter(r => r.some(v => v !== ""));
+}
+
+/* --- 依標題名稱對應欄位，欄位順序可以自由調整 --- */
+function parseRows(rows) {
+  const head = rows[0] || [];
+  const get = (row, name) => { const i = head.indexOf(name); return i === -1 ? "" : (row[i] || ""); };
+  const split = (s) => s.split(/[,，、]/).map(v => v.trim()).filter(Boolean);
+  return rows.slice(1)
+    .filter(r => head.indexOf("顯示與否") === -1 || get(r, "顯示與否") === "顯示")
+    .map(r => ({
+      category: get(r, "分類"),
+      code: get(r, "代號"),
+      title: get(r, "課程名稱") || "未命名活動",
+      modes: get(r, "預約"),
+      targets: split(get(r, "適合對象(篩選器用)")),
+      targetText: get(r, "適合對象(顯示於前台)") || get(r, "適合對象(篩選器用)"),
+      places: split(get(r, "地點")),
+      time: get(r, "時間"),
+      link: get(r, "申請連結"),
+      cover: driveThumb(get(r, "活動封面圖")),
+    }));
+}
+
+/* --- 把 Drive 分享連結轉成可直接顯示的縮圖網址 --- */
+function driveThumb(url) {
+  const m = url.match(/\/d\/([\w-]+)/) || url.match(/[?&]id=([\w-]+)/);
+  return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800` : "";
+}
+
+/* --- 產生篩選按鈕 --- */
+function buildChips() {
+  $("targetChips").innerHTML = "";
+  TARGETS.forEach(([value, label]) => $("targetChips").appendChild(makeChip(label, value, state.targets)));
+
+  const places = [...new Set(activities.flatMap(a => a.places))];
+  $("placeChips").innerHTML = "";
+  places.forEach(p => $("placeChips").appendChild(makeChip(p, p, state.places)));
+}
+
+function makeChip(label, value, set) {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "chip"; b.textContent = label;
+  b.setAttribute("aria-pressed", "false");
+  b.onclick = () => {
+    set.has(value) ? set.delete(value) : set.add(value);
+    b.setAttribute("aria-pressed", set.has(value));
+    render();
+  };
+  return b;
+}
+
+$("modeGroup").addEventListener("click", (e) => {
+  const btn = e.target.closest("button"); if (!btn) return;
+  state.mode = btn.dataset.mode;
+  document.querySelectorAll("#modeGroup button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+  render();
+});
+
+$("clearBtn").onclick = () => {
+  state.targets.clear(); state.places.clear(); state.mode = "全部";
+  document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", "false"));
+  document.querySelectorAll("#modeGroup button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === "全部"));
+  render();
+};
+
+/* --- 篩選＋顯示：同一類條件是「或」，不同類條件是「且」 --- */
+function render() {
+  const list = activities.filter(a =>
+    (state.mode === "全部" || a.modes.includes(state.mode)) &&
+    (state.targets.size === 0 || a.targets.some(t => state.targets.has(t))) &&
+    (state.places.size === 0 || a.places.some(p => state.places.has(p)))
+  );
+  $("count").textContent = `共 ${list.length} 筆符合`;
+  if (list.length === 0) {
+    showState("squirrel", "沒有符合條件的活動", "試著取消一些篩選條件，或按「清除篩選」重新開始。");
+    return;
+  }
+  $("grid").innerHTML = "";
+  list.forEach(a => $("grid").appendChild(makeCard(a)));
+}
+
+function makeCard(a) {
+  const cat = CATEGORY[a.category] || CATEGORY["課程教案"];
+  const hasLink = /^https?:\/\//.test(a.link);
+  const isVisit = a.category === "自由參觀";
+
+  const card = document.createElement(hasLink ? "a" : "div");
+  card.className = "card";
+  if (hasLink) { card.href = a.link; card.target = "_blank"; card.rel = "noopener"; }
+
+  // 封面：讀試算表的 Drive 圖片，沒有或讀不到就換成插圖
+  const illust = pickIllust(a, cat);
+  const cover = document.createElement("div");
+  cover.className = "cover";
+  const img = document.createElement("img");
+  img.alt = ""; img.loading = "lazy"; img.referrerPolicy = "no-referrer";
+  img.src = a.cover || "images/illust/" + illust + ".png";
+  if (!a.cover) cover.classList.add("illust");
+  img.onerror = () => { img.onerror = null; cover.classList.add("illust"); img.src = "images/illust/" + illust + ".png"; };
+  cover.appendChild(img);
+
+  const btn = !hasLink ? '<span class="btn btn-off">暫不開放申請</span>'
+    : isVisit ? '<span class="btn btn-visit">參觀資訊</span>'
+    : '<span class="btn btn-apply">前往申請</span>';
+
+  const body = document.createElement("div");
+  body.className = "card-body";
+  body.innerHTML = `
+    ${a.category ? `<span class="tag" style="background:${cat.bg};color:${cat.ink}">${esc(a.category)}</span>` : ""}
+    <h2 class="card-title">${esc(a.title)}</h2>
+    <div class="info">${ICON.people}<span>${esc(a.targetText)}</span></div>
+    <div class="info">${ICON.clock}<span>${esc(a.time)}</span></div>
+    <div class="places">${a.places.map(p => `<span class="place">${esc(p)}</span>`).join("")}</div>
+    <div class="action">${btn}</div>`;
+
+  card.append(cover, body);
+  return card;
+}
+
+function pickIllust(a, cat) {
+  const hit = ILLUST_BY_KEYWORD.find(([k]) => a.title.includes(k));
+  return hit ? hit[1] : cat.illust;
+}
+
+function showState(illust, text, sub = "", retry = false) {
+  $("grid").innerHTML = `
+    <div class="state">
+      <img src="images/illust/${illust}.png" alt="">
+      <p>${text}</p>
+      ${sub ? `<p class="sub">${sub}</p>` : ""}
+      ${retry ? '<button type="button" class="chip" onclick="loadData()">重新載入</button>' : ""}
+    </div>`;
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+const ICON = {
+  people: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg>',
+  clock: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+};
+</script>
+</body>
+</html>
